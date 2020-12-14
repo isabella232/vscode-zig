@@ -72,6 +72,6 @@ The key is to use the commands exposed by the extension.
 
 ```
 npm install
-tsc src/extensions.js
+tsc src/extensions.ts
 npx vsce package
 ```

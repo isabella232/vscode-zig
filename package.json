@@ -23,12 +23,13 @@
     "scripts": {
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./"
+        "watch": "tsc -watch -p ./",
+        "publish": "/Users/desaro/.npm-packages/lib/node_modules/vsce/out/vsce package"
     },
     "devDependencies": {
         "@types/mocha": "^2.2.48",
         "@types/node": "^7.10.9",
-        "@types/vscode": "^1.43.0",
+        "@types/vscode": "^0.1.0",
         "typescript": "^2.9.2"
     }
 }
