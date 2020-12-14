@@ -1,3 +1,6 @@
 [submodule "zls-vscode"]
 	path = zls-vscode
 	url = https://github.com/zigtools/zls-vscode.git
+[submodule "zig-vscode"]
+	path = zig-vscode
+	url = https://github.com/ziglang/vscode-zig
