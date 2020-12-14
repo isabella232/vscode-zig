@@ -12,6 +12,14 @@
 
 ## Usage
 
+### Direct Builds
+
+- `cmd/ctrl+shift+r` runs the `zig.build-last-target` command which will prompt you for a target the first time it is run and run it directly thereafter
+- `cmd/ctrl+shift+alt+r` runs the `zig.build-target` command which will always prompt you for a target
+- you can also can wire those commands up to whatever keybindings you want or use the command palette to run them
+
+### Using tasks.json
+
 Open your `tasks.json` file and create two new build tasks (the second is optional):
 
 ```json

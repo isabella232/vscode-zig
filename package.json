@@ -2,7 +2,7 @@
     "name": "zig",
     "displayName": "Zig",
     "description": "Build support for the Zig programming language",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "prime31",
     "icon": "images/zig-icon.png",
     "license": "MIT",
@@ -19,6 +19,36 @@
     "activationEvents": [
         "onLanguage:zig"
     ],
+    "contributes": {
+		"commands": [
+			{
+				"command": "zig.build-last-target",
+                "title": "Zig: Build last target"
+            },
+			{
+				"command": "zig.build-target",
+                "title": "Zig: Build choosing target"
+			}
+        ],
+        "keybindings":[
+            {
+                "command": "zig.build-last-target",
+                "key": "cmd+shift+r"
+            },
+            {
+                "command": "zig.build-last-target",
+                "key": "ctrl+shift+r"
+            },
+            {
+                "command": "zig.build-target",
+                "key": "cmd+shift+alt+r"
+            },
+            {
+                "command": "zig.build-target",
+                "key": "ctrl+shift+alt+r"
+            }
+        ]
+    },
     "main": "./out/extension",
     "scripts": {
         "vscode:prepublish": "npm run compile",
