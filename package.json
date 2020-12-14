@@ -2,7 +2,7 @@
     "name": "zig",
     "displayName": "Zig",
     "description": "Build support for the Zig programming language",
-    "version": "0.0.2",
+    "version": "0.1.0",
     "publisher": "prime31",
     "icon": "images/zig-icon.png",
     "license": "MIT",
@@ -23,10 +23,7 @@
     "contributes": {
         "taskDefinitions": [
             {
-                "type": "zig-build-last-target",
-                "properties": {
-
-                }
+                "type": "zig-build-last-target"
             },
             {
                 "type": "zig-build-choose-target"
@@ -44,19 +41,19 @@
         ],
         "keybindings": [
             {
-                "command": "zig.build-last-target",
+                "command": "zig-build-last-target",
                 "key": "cmd+shift+r"
             },
             {
-                "command": "zig.build-last-target",
+                "command": "zig-build-last-target",
                 "key": "ctrl+shift+r"
             },
             {
-                "command": "zig.build-target",
+                "command": "zig-build-target",
                 "key": "cmd+shift+alt+r"
             },
             {
-                "command": "zig.build-target",
+                "command": "zig-build-target",
                 "key": "ctrl+shift+alt+r"
             }
         ]
@@ -66,15 +63,14 @@
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
-        "publish": "/Users/desaro/.npm-packages/lib/node_modules/vsce/out/vsce package"
+        "publish": "/Users/desaro/.npm-packages/lib/node_modules/vsce/out/vsce package",
+        "publish_vsce_on_path": "vsce package"
     },
     "devDependencies": {
         "@types/mocha": "^2.2.48",
         "@types/node": "^7.10.9",
         "@types/vscode": "^1.1.6",
-        "typescript": "^2.9.2"
-    },
-    "dependencies": {
+        "typescript": "^2.9.2",
         "vscode": "^0.9.9"
     }
 }

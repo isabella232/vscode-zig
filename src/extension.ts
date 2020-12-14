@@ -14,25 +14,25 @@ export function activate(context: vscode.ExtensionContext) {
         return chooseBuildTarget();
     }));
 
-    vscode.tasks.registerTaskProvider("zig-build-choose-target", {
-        async provideTasks(token?: vscode.CancellationToken) {
-            let command = await chooseBuildTarget();
-            last_command = command;
-            var execution = new vscode.ShellExecution("zig build " + command);
-            return [
-                new vscode.Task({ type: "zig-build-choose-target" }, vscode.TaskScope.Workspace,
-                    "Build", "Zig build choose target", execution, ["$gcc"])
-            ];
-        },
+    // builds the last chosen target
+    context.subscriptions.push(
+        vscode.commands.registerCommand('zig-build-last-target', async () => {
+            vscode.tasks.executeTask(await getBuildTask("Build", "Zig build last target"));
+        })
+    );
 
-        resolveTask(task: vscode.Task, token?: vscode.CancellationToken) {
-            return task;
-        }
-    });
+    // same as above but forces a prompt for the target
+    context.subscriptions.push(
+        vscode.commands.registerCommand('zig-build-target', async () => {
+            vscode.tasks.executeTask(await getBuildTask("Build", "Zig build last target", true));
+        })
+    );
 
+    // provides a build last target task that appears in the command palatte
     vscode.tasks.registerTaskProvider("zig-build-last-target", {
         async provideTasks(token?: vscode.CancellationToken) {
             let command = last_command != null ? last_command : await chooseBuildTarget();
+            last_command = command;
             var execution = new vscode.ShellExecution("zig build " + command);
             return [
                 new vscode.Task({ type: "zig-build-last-target" }, vscode.TaskScope.Workspace,
@@ -44,18 +44,6 @@ export function activate(context: vscode.ExtensionContext) {
             return task;
         }
     });
-
-    context.subscriptions.push(
-        vscode.commands.registerCommand('zig.build-last-target', async () => {
-            vscode.tasks.executeTask(await getBuildTask("Build", "Zig build last target"));
-        })
-    );
-
-    context.subscriptions.push(
-        vscode.commands.registerCommand('zig.build-target', async () => {
-            vscode.tasks.executeTask(await getBuildTask("Build", "Zig build last target", true));
-        })
-    );
 }
 
 // uses showQuickPick to let you choose a zig build target

@@ -1,25 +1,24 @@
 # vscode-build-zig
-
 ![CI](https://img.shields.io/github/workflow/status/ziglang/vscode-zig/CI.svg)
 
 [Zig](http://ziglang.org/) build support for Visual Studio Code.
 
 ![](./images/example.png)
 
-## Features
 
+## Features
  - provides a parser for finding `zig build` targets
+ - keyboard shortcut and commands for building the last target or choosing a target to build
+
 
 ## Usage
-
 ### Direct Builds
-
 - `cmd/ctrl+shift+r` runs the `zig.build-last-target` command which will prompt you for a target the first time it is run and run it directly thereafter
 - `cmd/ctrl+shift+alt+r` runs the `zig.build-target` command which will always prompt you for a target
 - you can also can wire those commands up to whatever keybindings you want or use the command palette to run them
 
-### Using tasks.json
 
+### Using tasks.json
 Open your `tasks.json` file and create two new build tasks (the second is optional):
 
 ```json
@@ -71,15 +70,8 @@ Open your `tasks.json` file and create two new build tasks (the second is option
 }
 ```
 
-The key is to use the commands exposed by the extension.
+The key is to use the commands exposed by the extension as input for your own tasks.
 - `zig.build.getTargets`: parses your build targets and provides a selection list to choose the one to execute `zig build TARGET`
 - `zig.build.getLastTargetOrPrompt`: if a previous target was used this skips parsing the build targets and just runs it, else it is that same as `zig.build.getTargets`
 
-
-## Creating .vsix extension file
-
-```
-npm install
-tsc src/extensions.ts
-npx vsce package
-```
+Note that `zig` must be in your `PATH`!
