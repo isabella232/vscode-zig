@@ -2,7 +2,7 @@
     "name": "zig",
     "displayName": "Zig",
     "description": "Build support for the Zig programming language",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "publisher": "prime31",
     "icon": "images/zig-icon.png",
     "license": "MIT",
@@ -31,12 +31,27 @@
         ],
         "commands": [
             {
-                "command": "zig.build-last-target",
+                "command": "zig-build-last-target",
                 "title": "Zig: Build last target"
             },
             {
-                "command": "zig.build-target",
+                "command": "zig-build-target",
                 "title": "Zig: Build choosing target"
+            },
+            {
+                "command": "zig.zls.start",
+                "title": "Start Zig Language Server",
+                "category": "Zig Language Server"
+            },
+            {
+                "command": "zig.zls.stop",
+                "title": "Stop Zig Language Server",
+                "category": "Zig Language Server"
+            },
+            {
+                "command": "zig.zls.restart",
+                "title": "Restart Zig Language Server",
+                "category": "Zig Language Server"
             }
         ],
         "keybindings": [
@@ -56,6 +71,49 @@
                 "command": "zig-build-target",
                 "key": "ctrl+shift+alt+r"
             }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Zig Build Extension",
+            "properties": {
+                "zigLanguageClient.disabled": {
+                    "scope": "resource",
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Disable ZLS support in this extension allowing you to use the regular ZLS extension"
+                },
+                "zigLanguageClient.path": {
+                    "scope": "resource",
+                    "type": "string",
+                    "description": "Path to `zls` executable. Example: `C:/zls/zig-cache/bin/zls.exe`."
+                },
+                "zigLanguageClient.debugLog": {
+                    "scope": "resource",
+                    "type": "boolean",
+                    "description": "Enable debug logging in release builds of zls."
+                },
+                "zig.revealOutputChannelOnFormattingError": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Should output channel be raised on formatting error."
+                }
+            }
+        },
+        "languages": [
+            {
+                "id": "zig",
+                "extensions": [
+                    ".zig"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "zig",
+                "scopeName": "source.zig",
+                "path": "zig-vscode/syntaxes/zig.tmLanguage.json"
+            }
         ]
     },
     "main": "./out/extension",
@@ -66,11 +124,19 @@
         "publish": "/Users/desaro/.npm-packages/lib/node_modules/vsce/out/vsce package",
         "publish_vsce_on_path": "vsce package"
     },
+    "dependencies": {
+        "vscode-languageclient": "^7.0.0-next.9"
+    },
     "devDependencies": {
-        "@types/mocha": "^2.2.48",
-        "@types/node": "^7.10.9",
-        "@types/vscode": "^1.1.6",
-        "typescript": "^2.9.2",
-        "vscode": "^0.9.9"
+        "@types/glob": "^7.1.3",
+        "@types/mocha": "^7.0.2",
+        "@types/node": "^13.13.21",
+        "@types/vscode": "^1.30.0",
+        "@typescript-eslint/eslint-plugin": "^2.26.0",
+        "@typescript-eslint/parser": "^2.26.0",
+        "eslint": "^6.8.0",
+        "glob": "^7.1.6",
+        "mocha": "^7.1.1",
+        "typescript": "^3.9.7"
     }
 }

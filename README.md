@@ -1,25 +1,26 @@
-# vscode-build-zig
-![CI](https://img.shields.io/github/workflow/status/ziglang/vscode-zig/CI.svg)
-
-[Zig](http://ziglang.org/) build support for Visual Studio Code.
+# Zig Builder + ZLS + Zig Language Extension
+Smashes together the [VSCode Zig Extension](https://github.com/ziglang/vscode-zig) the almighty [ZLS](https://github.com/zigtools/zls-vscode) and then adds on top build commands that parse your `zig build --help` output letting you select your build target easily.
 
 ![](./images/example.png)
 
 
 ## Features
  - provides a parser for finding `zig build` targets
- - keyboard shortcut and commands for building the last target or choosing a target to build
+ - keyboard shortcut and VS Code commands for building the last target or choosing a target to build
+ - comes pre-packed with [ZLS](https://github.com/zigtools/zls-vscode) so you can use just one Zig extension (disabled by default, enable via `zigLanguageClient.disabled`)
 
 
 ## Usage
 ### Direct Builds
-- `cmd/ctrl+shift+r` runs the `zig.build-last-target` command which will prompt you for a target the first time it is run and run it directly thereafter
-- `cmd/ctrl+shift+alt+r` runs the `zig.build-target` command which will always prompt you for a target
+- `cmd/ctrl+shift+r` runs the `zig-build-last-target` command which will prompt you for a target the first time it is run and run it directly thereafter
+- `cmd/ctrl+shift+alt+r` runs the `zig-build-target` command which will always prompt you for a target
 - you can also can wire those commands up to whatever keybindings you want or use the command palette to run them
 
 
-### Using tasks.json
-Open your `tasks.json` file and create two new build tasks (the second is optional):
+### Advanced (you can probably stop reading now)
+
+#### Using tasks.json
+Open your `tasks.json` file and create two new build tasks (the second is optional). Pay close attention to the `input:` substitution in the build command and the relevant providers in the `inputs` section.
 
 ```json
 {

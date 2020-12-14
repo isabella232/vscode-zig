@@ -1,10 +1,15 @@
 'use strict';
 import * as vscode from 'vscode';
 import { CommandHandler } from './CommandHandler';
+import * as zls from './ZLS'
 
 var last_command: string = null;
 
 export function activate(context: vscode.ExtensionContext) {
+    // zls
+    if (!vscode.workspace.getConfiguration('zigLanguageClient').get('disabled', true))
+        zls.activate(context);
+
     // Provider for all the available runnable zig tasks
     context.subscriptions.push(vscode.commands.registerCommand('zig.build.getTargets', chooseBuildTarget));
 
@@ -24,26 +29,26 @@ export function activate(context: vscode.ExtensionContext) {
     // same as above but forces a prompt for the target
     context.subscriptions.push(
         vscode.commands.registerCommand('zig-build-target', async () => {
-            vscode.tasks.executeTask(await getBuildTask("Build", "Zig build last target", true));
+            vscode.tasks.executeTask(await getBuildTask("Build", "Zig build force choose target", true));
         })
     );
 
     // provides a build last target task that appears in the command palatte
     vscode.tasks.registerTaskProvider("zig-build-last-target", {
         async provideTasks(token?: vscode.CancellationToken) {
-            let command = last_command != null ? last_command : await chooseBuildTarget();
-            last_command = command;
-            var execution = new vscode.ShellExecution("zig build " + command);
-            return [
-                new vscode.Task({ type: "zig-build-last-target" }, vscode.TaskScope.Workspace,
-                    "Build", "Zig build last target", execution, ["$gcc"])
-            ];
+            return [await getBuildTask("Build", "Zig build last target", false)];
         },
 
         resolveTask(task: vscode.Task, token?: vscode.CancellationToken) {
             return task;
         }
     });
+}
+
+export function deactivate() {
+    if (vscode.workspace.getConfiguration('zigLanguageClient').get('disabled', true))
+        return zls.deactivate();
+    return null;5
 }
 
 // uses showQuickPick to let you choose a zig build target
