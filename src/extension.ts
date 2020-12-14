@@ -28,6 +28,21 @@ export function activate(context: vscode.ExtensionContext) {
         return callback();
     }));
 
+    vscode.tasks.registerTaskProvider("zig-project-builder", {
+        provideTasks(token?: vscode.CancellationToken) {
+            var execution = new vscode.ShellExecution("zig build simple");
+            var problemMatchers = ["$gcc"];
+            return [
+                new vscode.Task({ type: "zig-project-builder" }, vscode.TaskScope.Workspace,
+                    "Build", "zig build", execution, problemMatchers)
+            ];
+        },
+
+        resolveTask(task: vscode.Task, token?: vscode.CancellationToken) {
+            return task;
+        }
+    });
+
     context.subscriptions.push(
         vscode.commands.registerCommand('zig.build-last-target', async () => {
             let command = last_command != null ? last_command : await callback();

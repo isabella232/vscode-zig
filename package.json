@@ -17,9 +17,13 @@
         "Programming Languages"
     ],
     "activationEvents": [
-        "onLanguage:zig"
+        "onLanguage:zig",
+        "onCommand:workbench.action.tasks.runTask"
     ],
     "contributes": {
+        "taskDefinitions": [
+            { "type" : "zig-project-builder" }
+        ],
 		"commands": [
 			{
 				"command": "zig.build-last-target",
