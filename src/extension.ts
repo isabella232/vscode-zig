@@ -1,42 +1,33 @@
 'use strict';
 import * as vscode from 'vscode';
-import ZigCompilerProvider from './zigCompilerProvider';
-import { zigBuild } from './zigBuild';
-import { ZigFormatProvider, ZigRangeFormatProvider } from './zigFormat';
+import { CommandHandler } from './CommandHandler';
 
-const ZIG_MODE: vscode.DocumentFilter = { language: 'zig', scheme: 'file' };
-
-export let buildDiagnosticCollection: vscode.DiagnosticCollection;
-export const logChannel = vscode.window.createOutputChannel('zig');
-export const zigFormatStatusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
+var last_command: string = null;
 
 export function activate(context: vscode.ExtensionContext) {
-    let compiler = new ZigCompilerProvider();
-    compiler.activate(context.subscriptions);
-    vscode.languages.registerCodeActionsProvider('zig', compiler);
+    const callback = () => {
+        try {
+            const handler = new CommandHandler();
+            let target = handler.handle();
+            target.then(value => last_command = value);
+            return target;
+        } catch (error) {
+            const message = (error instanceof Error) ? error.message : 'Error executing shell command: ' + error;
+            console.error(error);
+            vscode.window.showErrorMessage(message);
+        }
+    };
 
-    context.subscriptions.push(logChannel);
-    context.subscriptions.push(
-        vscode.languages.registerDocumentFormattingEditProvider(
-            ZIG_MODE,
-            new ZigFormatProvider(logChannel),
-        ),
-    );
+    // Provider for all the available runnable zig tasks
+    const disposable = vscode.commands.registerCommand('zig.build.getTargets', callback);
+    context.subscriptions.push(disposable);
 
-    context.subscriptions.push(
-        vscode.languages.registerDocumentRangeFormattingEditProvider(
-            ZIG_MODE,
-            new ZigRangeFormatProvider(logChannel),
-        ),
-    );
-
-    buildDiagnosticCollection = vscode.languages.createDiagnosticCollection('zig');
-    context.subscriptions.push(buildDiagnosticCollection);
-
-    // Commands
-    context.subscriptions.push(vscode.commands.registerCommand('zig.build.workspace', () => zigBuild()));
-    context.subscriptions.push(vscode.commands.registerCommand('zig.format.file', () => console.log('test')));
+    // Shortcut to run the last ran target or prompt if there was no last ran
+    const disposable2 = vscode.commands.registerCommand('zig.build.getLastTargetOrPrompt', () => {
+        if (last_command != null) return last_command;
+        return callback();
+    });
+    context.subscriptions.push(disposable2);
 }
 
-export function deactivate() {
-}
+export function deactivate() {}

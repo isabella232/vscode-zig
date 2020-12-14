@@ -1,21 +1,72 @@
-# vscode-zig
+# vscode-build-zig
 
 ![CI](https://img.shields.io/github/workflow/status/ziglang/vscode-zig/CI.svg)
 
-[Zig](http://ziglang.org/) support for Visual Studio Code.
+[Zig](http://ziglang.org/) build support for Visual Studio Code.
 
-![Syntax Highlighting](./images/example.png)
+![](./images/example.png)
 
 ## Features
 
- - syntax highlighting
- - basic compiler linting
- - automatic formatting
+ - provides a parser for finding `zig build` targets
 
-## Automatic Formatting
+## Usage
 
-To enable automatic formatting add the `zig` command to your `PATH`, or
-modify the `Zig Path` setting to point to the `zig` binary.
+Open your `tasks.json` file and create two new build tasks (the second is optional):
+
+```json
+{
+    "tasks": [
+        {
+            "label": "Build and Run Specific Target",
+            "type": "shell",
+            "command": "zig build ${input:zigTarget}",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "clear": true
+            }
+        },
+        {
+            "label": "Build and Run Last Target",
+            "type": "shell",
+            "command": "zig build ${input:zigLastTarget}",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "clear": true
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "zigTarget",
+            "type": "command",
+            "command": "zig.build.getTargets",
+        },
+        {
+            "id": "zigLastTarget",
+            "type": "command",
+            "command": "zig.build.getLastTargetOrPrompt"
+        }
+    ]
+}
+```
+
+The key is to use the commands exposed by the extension.
+- `zig.build.getTargets`: parses your build targets and provides a selection list to choose the one to execute `zig build TARGET`
+- `zig.build.getLastTargetOrPrompt`: if a previous target was used this skips parsing the build targets and just runs it, else it is that same as `zig.build.getTargets`
+
 
 ## Creating .vsix extension file
 
