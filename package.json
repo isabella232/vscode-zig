@@ -23,7 +23,10 @@
     "contributes": {
         "taskDefinitions": [
             {
-                "type": "zig-build-last-target"
+                "type": "zig-build-last-target",
+                "properties": {
+
+                }
             },
             {
                 "type": "zig-build-choose-target"

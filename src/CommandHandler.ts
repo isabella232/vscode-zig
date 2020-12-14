@@ -11,9 +11,12 @@ export class CommandHandler {
     constructor() {}
 
     handle() {
+        return vscode.window.showQuickPick(this.getAvailableTargets(), { "placeHolder": "Select the zig target to run" });
+    }
+
+    getAvailableTargets() {
         const result = this.runCommand();
-        const nonEmptyInput = this.parseResult(result);
-        return vscode.window.showQuickPick(nonEmptyInput, { "placeHolder": "Select the zig target to run" });
+        return this.parseResult(result);
     }
 
     protected runCommand() {
