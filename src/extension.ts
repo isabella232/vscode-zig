@@ -48,7 +48,7 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() {
     if (vscode.workspace.getConfiguration('zigLanguageClient').get('disabled', true))
         return zls.deactivate();
-    return null;5
+    return null; 5
 }
 
 // uses showQuickPick to let you choose a zig build target
@@ -68,7 +68,11 @@ function chooseBuildTarget() {
 // fetches a Task that optionally prompts for a build target that can be run
 async function getBuildTask(name: string, source: string, force_target_prompt: boolean = false) {
     let command = last_command != null && !force_target_prompt ? last_command : await chooseBuildTarget();
-    var execution = new vscode.ShellExecution("zig build " + command);
-    return new vscode.Task({ type: "zig-build-last-target" }, vscode.TaskScope.Workspace,
+    if (command == undefined) {
+        throw Error("No build task selected. Aborting 'zig build'");
+    } else {
+        var execution = new vscode.ShellExecution("zig build " + command);
+        return new vscode.Task({ type: "zig-build-last-target" }, vscode.TaskScope.Workspace,
             name, source, execution, ["$gcc"]);
+    }
 }
