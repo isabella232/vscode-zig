@@ -68,10 +68,15 @@ function chooseBuildTarget() {
 // fetches a Task that optionally prompts for a build target that can be run
 async function getBuildTask(name: string, source: string, force_target_prompt: boolean = false) {
     let command = last_command != null && !force_target_prompt ? last_command : await chooseBuildTarget();
-    if (command == undefined) {
+    if (command == undefined || command.length == 0) {
         throw Error("No build task selected. Aborting 'zig build'");
     } else {
-        var execution = new vscode.ShellExecution("zig build " + command);
+        // var execution = new vscode.ShellExecution("zig build " + command);
+        let env : { [key: string]: string} = {};
+        env["ZIG_SYSTEM_LINKER_HACK"] = "1";
+        var execution = new vscode.ShellExecution("zig build " + command, {
+            env: env
+        });
         return new vscode.Task({ type: "zig-build-last-target" }, vscode.TaskScope.Workspace,
             name, source, execution, ["$gcc"]);
     }

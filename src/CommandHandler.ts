@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as subprocess from 'child_process';
+import * as fs from 'fs';
 
 export class CommandHandler {
     protected command: string = "zig build --help";
@@ -20,12 +21,14 @@ export class CommandHandler {
     }
 
     protected runCommand() {
+        if (!fs.existsSync(vscode.workspace.workspaceFolders![0].uri.fsPath + "/build.zig"))
+            throw Error("Aborting build target fetch. No build.zig file found in workspace root.");
+
         const options: subprocess.ExecSyncOptionsWithStringEncoding = {
             encoding: 'utf8',
             cwd: vscode.workspace.workspaceFolders![0].uri.fsPath,
             shell: vscode.env.shell
         };
-
         return subprocess.execSync(this.command!, options);
     }
 
