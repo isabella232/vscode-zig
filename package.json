@@ -2,7 +2,7 @@
     "name": "zig",
     "displayName": "Zig",
     "description": "Build support for the Zig programming language",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "publisher": "prime31",
     "icon": "images/zig-icon.png",
     "license": "MIT",
@@ -112,7 +112,7 @@
             {
                 "language": "zig",
                 "scopeName": "source.zig",
-                "path": "zig-vscode/syntaxes/zig.tmLanguage.json"
+                "path": "./syntaxes/zig.tmLanguage.json"
             }
         ]
     },
