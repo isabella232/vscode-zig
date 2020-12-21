@@ -1,5 +1,5 @@
 # Zig Builder + ZLS + Zig Language Extension
-Smashes together the [VSCode Zig Extension](https://github.com/ziglang/vscode-zig) the almighty [ZLS](https://github.com/zigtools/zls-vscode) [multi-command macros](https://github.com/ryuta46/vscode-multi-command) and then adds on top build commands that parse your `zig build --help` output letting you select your build target easily.
+Smashes together the [VSCode Zig Extension](https://github.com/ziglang/vscode-zig) the almighty [ZLS](https://github.com/zigtools/zls-vscode) and [multi-command macros](https://github.com/ryuta46/vscode-multi-command) and then adds on top build commands that parse your `zig build --help` output letting you select your build target easily.
 
 ![](./images/example.png)
 
