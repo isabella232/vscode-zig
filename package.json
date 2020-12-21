@@ -2,7 +2,7 @@
     "name": "zig",
     "displayName": "Zig",
     "description": "Build support for the Zig programming language",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "publisher": "prime31",
     "icon": "images/zig-icon.png",
     "license": "MIT",

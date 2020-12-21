@@ -81,7 +81,7 @@ async function getBuildTask(name: string, source: string, force_target_prompt: b
         var execution = new vscode.ShellExecution("zig build " + command, {
             env: env
         });
-        return new vscode.Task({ type: "zig-build-last-target" }, vscode.TaskScope.Workspace,
+        return new vscode.Task({ type: "zig.buildLastTarget" }, vscode.TaskScope.Workspace,
             name, source, execution, ["$gcc"]);
     }
 }
