@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 
 export class Command {
-    constructor(private readonly exe: string, private readonly args: object | null) {}
+    constructor(private readonly exe: string, private readonly args: object | null) { }
 
     public execute() {
         if (this.args === null) {
@@ -14,10 +14,10 @@ export class Command {
 
 export class MultiCommand {
     constructor(readonly id: string,
-                readonly label: string | undefined,
-                readonly description: string | undefined,
-                readonly interval: number | undefined,
-                readonly sequence: Array<Command>) {}
+        readonly label: string | undefined,
+        readonly description: string | undefined,
+        readonly interval: number | undefined,
+        readonly sequence: Array<Command>) { }
 
     public async execute() {
         for (let command of this.sequence) {
@@ -34,7 +34,7 @@ function delay(ms: number) {
 }
 
 
-interface CommandSettings{
+interface CommandSettings {
     command: string,
     label: string,
     description: string,
@@ -48,15 +48,18 @@ interface ComplexCommand {
 }
 
 let multiCommands: Array<MultiCommand>;
+let subscriptions: Array<vscode.Disposable> = new Array<vscode.Disposable>();
 
 function refreshUserCommands(context: vscode.ExtensionContext) {
     let configuration = vscode.workspace.getConfiguration("zig.multiCommand");
     let commands = configuration.get<Array<CommandSettings>>("commands");
 
-    // Dispose current settings.
+    // Dispose currently registered commands
     for (let element of context.subscriptions) {
-        element.dispose();
+        if (subscriptions.indexOf(element) != -1)
+            element.dispose();
     }
+    subscriptions = [];
 
     if (!commands) {
         return;
@@ -71,7 +74,7 @@ function refreshUserCommands(context: vscode.ExtensionContext) {
         const sequence = commandSettings.sequence.map(command => {
             let exe: string;
             let args: object | null;
-            if (typeof(command) === "string" ) {
+            if (typeof (command) === "string") {
                 exe = command;
                 args = null;
             } else {
@@ -85,9 +88,11 @@ function refreshUserCommands(context: vscode.ExtensionContext) {
         const multiCommand = new MultiCommand(id, label, description, interval, sequence);
         multiCommands.push(multiCommand);
 
-        context.subscriptions.push(vscode.commands.registerCommand(id, async () => {
+        const disposable = vscode.commands.registerCommand(id, async () => {
             await multiCommand.execute();
-        }));
+        });
+        subscriptions.push(disposable);
+        context.subscriptions.push(disposable);
     }
 
 }
@@ -114,6 +119,33 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
+    vscode.commands.registerCommand('zig.multiCommand.executeCommandList', async (args = {}) => {
+        try {
+            if (args.sequence) {
+                const interval = args.interval;
+                const sequence = args.sequence.map(command => {
+                    let exe: string;
+                    let args: object | null;
+                    if (typeof (command) === "string") {
+                        exe = command;
+                        args = null;
+                    } else {
+                        exe = command.command;
+                        args = command.args;
+                    }
+                    return new Command(exe, args);
+                });
+
+
+                const multiCommand = new MultiCommand('fake id', 'fake label', 'fake description', interval, sequence);
+                await multiCommand.execute();
+            } else {
+                vscode.window.showInformationMessage("No 'sequence' argument found for 'zig.multiCommand.executeCommandList");
+            }
+        } catch (e) {
+            vscode.window.showErrorMessage(`${e.message}`);
+        }
+    });
 }
 
 export async function pickMultiCommand() {

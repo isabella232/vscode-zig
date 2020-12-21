@@ -2,7 +2,7 @@
     "name": "zig",
     "displayName": "Zig",
     "description": "Build support for the Zig programming language",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "publisher": "prime31",
     "icon": "images/zig-icon.png",
     "license": "MIT",
@@ -24,9 +24,6 @@
         "taskDefinitions": [
             {
                 "type": "zig.buildLastTarget"
-            },
-            {
-                "type": "zig-build-choose-target"
             }
         ],
         "commands": [
@@ -55,6 +52,11 @@
             },
             {
                 "command": "zig.multiCommand.execute",
+                "title": "Execute multi command",
+                "category": "Multi command"
+            },
+            {
+                "command": "zig.multiCommand.executeCommandList",
                 "title": "Execute multi command",
                 "category": "Multi command"
             }
@@ -123,7 +125,7 @@
                                         "string",
                                         "object"
                                     ],
-                                    "description": "command sequence which been invoked"
+                                    "description": "command sequence to exectute"
                                 }
                             }
                         }

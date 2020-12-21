@@ -31,24 +31,40 @@ For example:
 ```json
 {
     "key": "F1",
-    "command": "zig.multiCommand.execute" ,
+    "command": "zig.multiCommand.execute",
     "args": { "command": "multiCommand.down3Lines" },
     "when": "editorTextFocus"
 },
 {
     "key": "F2",
-    "command": "zig.multiCommand.execute" ,
+    "command": "zig.multiCommand.execute",
     "args": { "command": "multiCommand.swapChar" },
     "when": "editorTextFocus"
 }
 ```
 
 You can bind a key to the command you defined directly.
-
 For example:
 ```json
-{ "key": "F1", "command": "multiCommand.down3Lines", "when": "editorTextFocus"},
-{ "key": "F2", "command": "multiCommand.swapChar", "when": "editorTextFocus"}
+{ "key": "F1", "command": "multiCommand.down3Lines", "when": "editorTextFocus" },
+{ "key": "F2", "command": "multiCommand.swapChar", "when": "editorTextFocus" }
+```
+
+And finally, you can simultaneously create and bind a command in your `keybindings.json`. These commands will not show up in the command palatte and can only be executed via the keyboard shortcut.
+For example:
+```json
+{
+    "key": "F1",
+    "command": "zig.multiCommand.executeCommandList",
+    "args": {
+        "sequence": [
+            "cursorDown",
+            "cursorDown",
+            "cursorDown"
+        ]
+    },
+    "when": "editorTextFocus"
+}
 ```
 
 ### Advanced Settings
