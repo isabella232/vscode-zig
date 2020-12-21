@@ -2,6 +2,7 @@
 import * as vscode from 'vscode';
 import { CommandHandler } from './CommandHandler';
 import * as zls from './ZLS'
+import * as macros from './Macros'
 
 var last_command: string = null;
 
@@ -9,6 +10,9 @@ export function activate(context: vscode.ExtensionContext) {
     // zls
     if (!vscode.workspace.getConfiguration('zigLanguageClient').get('disabled', true))
         zls.activate(context);
+
+    // macros/multi-command
+    macros.activate(context)
 
     // Provider for all the available runnable zig tasks
     context.subscriptions.push(vscode.commands.registerCommand('zig.build.getTargets', chooseBuildTarget));
@@ -21,20 +25,20 @@ export function activate(context: vscode.ExtensionContext) {
 
     // builds the last chosen target
     context.subscriptions.push(
-        vscode.commands.registerCommand('zig-build-last-target', async () => {
+        vscode.commands.registerCommand('zig.buildLastTarget', async () => {
             vscode.tasks.executeTask(await getBuildTask("Build", "Zig build last target"));
         })
     );
 
     // same as above but forces a prompt for the target
     context.subscriptions.push(
-        vscode.commands.registerCommand('zig-build-target', async () => {
+        vscode.commands.registerCommand('zig.buildTarget', async () => {
             vscode.tasks.executeTask(await getBuildTask("Build", "Zig build force choose target", true));
         })
     );
 
     // provides a build last target task that appears in the command palatte
-    vscode.tasks.registerTaskProvider("zig-build-last-target", {
+    vscode.tasks.registerTaskProvider("zig.buildLastTarget", {
         async provideTasks(token?: vscode.CancellationToken) {
             return [await getBuildTask("Build", "Zig build last target", false)];
         },

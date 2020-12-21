@@ -1,5 +1,5 @@
 # Zig Builder + ZLS + Zig Language Extension
-Smashes together the [VSCode Zig Extension](https://github.com/ziglang/vscode-zig) the almighty [ZLS](https://github.com/zigtools/zls-vscode) and then adds on top build commands that parse your `zig build --help` output letting you select your build target easily.
+Smashes together the [VSCode Zig Extension](https://github.com/ziglang/vscode-zig) the almighty [ZLS](https://github.com/zigtools/zls-vscode) [multi-command macros](https://github.com/ryuta46/vscode-multi-command) and then adds on top build commands that parse your `zig build --help` output letting you select your build target easily.
 
 ![](./images/example.png)
 
@@ -12,8 +12,8 @@ Smashes together the [VSCode Zig Extension](https://github.com/ziglang/vscode-zi
 
 ## Usage
 ### Direct Builds
-- `cmd/ctrl+shift+r` runs the `zig-build-last-target` command which will prompt you for a target the first time it is run and run it directly thereafter
-- `cmd/ctrl+shift+alt+r` runs the `zig-build-target` command which will always prompt you for a target
+- `cmd/ctrl+shift+r` runs the `zig.buildLastTarget` command which will prompt you for a target the first time it is run and run it directly thereafter
+- `cmd/ctrl+shift+alt+r` runs the `zig.buildTarget` command which will always prompt you for a target
 - you can also can wire those commands up to whatever keybindings you want or use the command palette to run them
 
 
@@ -76,3 +76,9 @@ The key is to use the commands exposed by the extension as input for your own ta
 - `zig.build.getLastTargetOrPrompt`: if a previous target was used this skips parsing the build targets and just runs it, else it is that same as `zig.build.getTargets`
 
 Note that `zig` must be in your `PATH`!
+
+
+## Multi-Command Macros
+These settings allow you to create command sequence as one command and bind a key to run them or use the command palette (via the "Multi command: Execute multi command" entry). Commands are defined in your `settings.json` file in the `zig.multiCommand.commands` array.
+
+See the [documentation](MULTI_COMMAND.md) for details on use.
