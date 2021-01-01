@@ -2,7 +2,7 @@
     "name": "zig",
     "displayName": "Zig",
     "description": "Build support for the Zig programming language",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "publisher": "prime31",
     "icon": "images/zig-icon.png",
     "license": "MIT",
@@ -18,7 +18,7 @@
     ],
     "activationEvents": [
         "onLanguage:zig",
-        "onCommand:workbench.action.tasks.runTask"
+        "workspaceContains:**/build.zig"
     ],
     "contributes": {
         "taskDefinitions": [
