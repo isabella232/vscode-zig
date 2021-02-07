@@ -1,8 +1,9 @@
 'use strict';
 import * as vscode from 'vscode';
-import { CommandHandler } from './CommandHandler';
+import { ZigBuild } from './ZigBuild';
 import * as zls from './ZLS'
-import * as macros from './Macros'
+import * as macros from './macros'
+import * as fzf from './fzf'
 
 var last_command: string = null;
 
@@ -12,7 +13,10 @@ export function activate(context: vscode.ExtensionContext) {
         zls.activate(context);
 
     // macros/multi-command
-    macros.activate(context)
+    macros.activate(context);
+
+    // fzf
+    fzf.activate(context);
 
     // Provider for all the available runnable zig tasks
     context.subscriptions.push(vscode.commands.registerCommand('zig.build.getTargets', chooseBuildTarget));
@@ -52,13 +56,15 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() {
     if (vscode.workspace.getConfiguration('zigLanguageClient').get('disabled', true))
         return zls.deactivate();
+
+    fzf.deactivate();
     return null; 5
 }
 
 // uses showQuickPick to let you choose a zig build target
 function chooseBuildTarget() {
     try {
-        const handler = new CommandHandler();
+        const handler = new ZigBuild();
         let target = handler.handle();
         target.then(value => last_command = value);
         return target;

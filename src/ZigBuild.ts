@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as subprocess from 'child_process';
 import * as fs from 'fs';
 
-export class CommandHandler {
+export class ZigBuild {
     protected command: string = "zig build --help";
     protected EOL: RegExp = /\r\n|\r|\n/;
     protected inputOptions: vscode.QuickPickOptions = {

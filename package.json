@@ -2,7 +2,7 @@
     "name": "zig",
     "displayName": "Zig",
     "description": "Build support for the Zig programming language",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "publisher": "prime31",
     "icon": "images/zig-icon.png",
     "license": "MIT",
@@ -59,6 +59,14 @@
                 "command": "zig.multiCommand.executeCommandList",
                 "title": "Execute multi command",
                 "category": "Multi command"
+            },
+            {
+                "command": "zig.fzf.runFzfSearch",
+                "title": "fzf: Search using rg and fzf"
+            },
+            {
+                "command": "zig.fzf.runFzfFile",
+                "title": "fzf: Open file using fzf"
             }
         ],
         "keybindings": [
