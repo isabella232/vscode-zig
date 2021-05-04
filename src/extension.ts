@@ -2,7 +2,7 @@
 import * as vscode from 'vscode';
 import { ZigBuild } from './ZigBuild';
 import * as zls from './ZLS'
-import * as macros from './macros'
+import * as macros from './Macros'
 import * as fzf from './fzf'
 
 var last_command: string = null;
